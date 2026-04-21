@@ -1,5 +1,7 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### Pobierz zadanie o ID 1
+GET http://localhost:8080/idp/jobs/1
+Accept: application/json
 
-###
+### Pobierz zadanie o ID 2 (do testów)
+GET http://localhost:8080/idp/jobs/2
+Accept: application/json
