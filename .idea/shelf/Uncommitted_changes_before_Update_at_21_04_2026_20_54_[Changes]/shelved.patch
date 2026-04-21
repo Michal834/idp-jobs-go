@@ -1,0 +1,302 @@
+Index: go.sum
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>github.com/go-chi/chi/v5 v5.0.10 h1:rLz5avzKpjqxrYwXNfmjkrYYXOyLJd37pz53UFHC6vk=\r\ngithub.com/go-chi/chi/v5 v5.0.10/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/go.sum b/go.sum
+--- a/go.sum	(revision c9255c15377738450730ffa1ce4263885cf37893)
++++ b/go.sum	(date 1776797434270)
+@@ -1,2 +1,0 @@
+-github.com/go-chi/chi/v5 v5.0.10 h1:rLz5avzKpjqxrYwXNfmjkrYYXOyLJd37pz53UFHC6vk=
+-github.com/go-chi/chi/v5 v5.0.10/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
+Index: service/testdata/Test_getJob/01.Happy_path_job_exists/expectedJob.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/service/testdata/Test_getJob/01.Happy_path_job_exists/expectedJob.json b/service/testdata/Test_getJob/01.Happy_path_job_exists/expectedJob.json
+new file mode 100644
+--- /dev/null	(date 1776797083455)
++++ b/service/testdata/Test_getJob/01.Happy_path_job_exists/expectedJob.json	(date 1776797083455)
+@@ -0,0 +1,5 @@
++{
++  "jobId": "123",
++  "status": "ok",
++  "createdAt": "2026-04-09T10:00:00Z"
++}
+\ No newline at end of file
+Index: service/test_helpers.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/service/test_helpers.go b/service/test_helpers.go
+new file mode 100644
+--- /dev/null	(date 1776797083454)
++++ b/service/test_helpers.go	(date 1776797083454)
+@@ -0,0 +1,23 @@
++package service
++
++import (
++	"encoding/json"
++	"os"
++	"testing"
++
++	"github.com/stretchr/testify/require"
++
++	"idp-jobs-go/model"
++)
++
++func loadJobFromFile(t *testing.T, path string) *model.Job {
++	t.Helper()
++
++	data, err := os.ReadFile(path)
++	require.NoError(t, err)
++
++	var job model.Job
++	require.NoError(t, json.Unmarshal(data, &job))
++
++	return &job
++}
+Index: docs/assighment.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/assighment.md b/docs/assighment.md
+new file mode 100644
+--- /dev/null	(date 1776797083451)
++++ b/docs/assighment.md	(date 1776797083451)
+@@ -0,0 +1,39 @@
++1. Repozytorium
++
++   stwórz nowe repozytorium na GitHubie
++   nazwij je: idp-jobs-go
++   ustaw jako publiczne
++   dodaj mnie jako collaborator: https://github.com/norbix/
++
++1. Zadanie techniczne
++
++    Zaimplementuj endpoint:
++    
++    GET /idp/jobs/{jobId}
++    
++    który zwraca:
++    
++        jobId
++        status
++        createdAt
++
++1. Wymagania
++
++   podział na warstwy:
++   - api
++   - service
++   - repository
++   - model
++   - storage:
++   - na start in-memory
++   
++   testy:
++   - unit test dla service
++   - integration test dla endpointu HTTP z uzyciem docker
++
++1. Dodatkowo
++
++   README.md z:
++   jak uruchomić projekt
++   jak uruchomić testy
++
+Index: service/job_service.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service\r\n\r\nimport (\r\n\t\"errors\"\r\n\r\n\t\"idp-jobs-go/model\"\r\n\t\"idp-jobs-go/repository\"\r\n)\r\n\r\ntype JobService struct {\r\n\trepo repository.JobRepository\r\n}\r\n\r\nfunc NewJobService(r repository.JobRepository) *JobService {\r\n\treturn &JobService{repo: r}\r\n}\r\n\r\nfunc (s *JobService) GetJob(id string) (*model.Job, error) {\r\n\tif id == \"\" {\r\n\t\treturn nil, errors.New(\"id cannot be empty\")\r\n\t}\r\n\r\n\treturn s.repo.GetByID(id)\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/service/job_service.go b/service/job_service.go
+--- a/service/job_service.go	(revision c9255c15377738450730ffa1ce4263885cf37893)
++++ b/service/job_service.go	(date 1776797083452)
+@@ -7,18 +7,33 @@
+ 	"idp-jobs-go/repository"
+ )
+ 
++// JobService provides operations for working with Job entities.
++// It acts as a business logic layer between the API and the repository.
+ type JobService struct {
+ 	repo repository.JobRepository
+ }
+ 
++// NewJobService creates a new instance of JobService with the given repository.
++//
++// The repository is responsible for data access, while the service
++// handles validation and business logic.
+ func NewJobService(r repository.JobRepository) *JobService {
+ 	return &JobService{repo: r}
+ }
+ 
++// GetJob retrieves a Job by its ID.
++//
++// It validates the input and delegates the retrieval to the repository.
++//
++// Returns:
++//   - *model.Job: the job if found
++//   - error: if the ID is empty or if the repository returns an error
++//
++// If id is empty, it returns an error without calling the repository.
+ func (s *JobService) GetJob(id string) (*model.Job, error) {
+ 	if id == "" {
+ 		return nil, errors.New("id cannot be empty")
+ 	}
+ 
+ 	return s.repo.GetByID(id)
+-}
+\ No newline at end of file
++}
+Index: service/job_service_test.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service\r\n\r\nimport (\r\n\t\"testing\"\r\n\r\n\t\"idp-jobs-go/model\"\r\n)\r\n\r\ntype mockRepo struct{}\r\n\r\nfunc (m *mockRepo) GetByID(id string) (*model.Job, error) {\r\n\treturn &model.Job{JobID: id, Status: \"ok\"}, nil\r\n}\r\n\r\nfunc TestGetJob(t *testing.T) {\r\n\tsvc := NewJobService(&mockRepo{})\r\n\r\n\tjob, err := svc.GetJob(\"123\")\r\n\tif err != nil {\r\n\t\tt.Fatalf(\"unexpected error: %v\", err)\r\n\t}\r\n\r\n\tif job.JobID != \"123\" {\r\n\t\tt.Fatalf(\"expected 123, got %s\", job.JobID)\r\n\t}\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/service/job_service_test.go b/service/job_service_test.go
+--- a/service/job_service_test.go	(revision c9255c15377738450730ffa1ce4263885cf37893)
++++ b/service/job_service_test.go	(date 1776797083454)
+@@ -3,24 +3,94 @@
+ import (
+ 	"testing"
+ 
++	"github.com/stretchr/testify/assert"
++	"github.com/stretchr/testify/require"
++
+ 	"idp-jobs-go/model"
+ )
+ 
+-type mockRepo struct{}
++type mockRepo struct {
++	called bool
++	job    *model.Job
++	err    error
++}
+ 
+-func (m *mockRepo) GetByID(id string) (*model.Job, error) {
+-	return &model.Job{JobID: id, Status: "ok"}, nil
++func (m *mockRepo) GetByID(jobID string) (*model.Job, error) {
++	m.called = true
++	return m.job, m.err
+ }
+ 
+ func TestGetJob(t *testing.T) {
+-	svc := NewJobService(&mockRepo{})
++	expectedJobFileNamePath := "testdata/Test_getJob/"
++	expectedJobFileName := "expectedJob.json"
++
++	tests := []struct {
++		name           string
++		jobID          string
++		mockErr        error
++		expectError    bool
++		expectRepoCall bool
++	}{
++		{
++			name:           "01.Happy_path_job_exists",
++			jobID:          "123",
++			expectError:    false,
++			expectRepoCall: true,
++		},
++		{
++			name:           "02.Empty_id",
++			jobID:          "",
++			expectError:    true,
++			expectRepoCall: false,
++		},
++		{
++			name:           "03.Job_not_found_nil_return",
++			jobID:          "999",
++			expectError:    false,
++			expectRepoCall: true,
++		},
++	}
++
++	for _, tt := range tests {
++		t.Run(tt.name, func(t *testing.T) {
++			// Given
++			var mockJob *model.Job
++
++			// TODO: think about better abstraction here
++			if tt.name == "01.Happy_path_job_exists" {
++				mockJob = loadJobFromFile(t, expectedJobFileNamePath+tt.name+"/"+expectedJobFileName)
++			}
++
++			repo := &mockRepo{
++				job: mockJob,
++				err: tt.mockErr,
++			}
++
++			svc := NewJobService(repo)
++
++			// When
++			result, err := svc.GetJob(tt.jobID)
+ 
+-	job, err := svc.GetJob("123")
+-	if err != nil {
+-		t.Fatalf("unexpected error: %v", err)
+-	}
++			// Then
++			if tt.expectError {
++				assert.Error(t, err)
++				return
++			}
+ 
+-	if job.JobID != "123" {
+-		t.Fatalf("expected 123, got %s", job.JobID)
++			assert.NoError(t, err)
++			assert.Equal(t, tt.expectRepoCall, repo.called)
++
++			if tt.name == "01.Happy_path_job_exists" {
++				expected := loadJobFromFile(t, expectedJobFileNamePath+tt.name+"/"+expectedJobFileName)
++
++				require.NotNil(t, result)
++
++				assert.Equal(t, expected.JobID, result.JobID)
++				assert.Equal(t, expected.Status, result.Status)
++				assert.True(t, expected.CreatedAt.Equal(result.CreatedAt))
++			} else {
++				assert.Nil(t, result)
++			}
++		})
+ 	}
+-}
+\ No newline at end of file
++}
+Index: go.mod
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>module idp-jobs-go\r\n\r\ngo 1.22\r\n\r\nrequire github.com/go-chi/chi/v5 v5.0.10\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/go.mod b/go.mod
+--- a/go.mod	(revision c9255c15377738450730ffa1ce4263885cf37893)
++++ b/go.mod	(date 1776797394334)
+@@ -2,4 +2,17 @@
+ 
+ go 1.22
+ 
++<<<<<<< HEAD
+ require github.com/go-chi/chi/v5 v5.0.10
++=======
++require (
++	github.com/go-chi/chi/v5 v5.2.5
++	github.com/stretchr/testify v1.11.1
++)
++
++require (
++	github.com/davecgh/go-spew v1.1.1 // indirect
++	github.com/pmezard/go-difflib v1.0.0 // indirect
++	gopkg.in/yaml.v3 v3.0.1 // indirect
++)
++>>>>>>> 33fb3989bbe92facdf2ca698c12453d614cb2d77

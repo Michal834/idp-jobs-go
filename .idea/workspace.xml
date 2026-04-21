@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dd34906b-619b-44a7-aeaf-cd9e9aedb8b0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/jobs.http" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/openapi/openapi.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/job_repository_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/job.schema.json" afterDir="false" />
-    </list>
+    <list default="true" id="dd34906b-619b-44a7-aeaf-cd9e9aedb8b0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,9 +10,39 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "history": [
+    {
+      "searchQuery": "idea",
+      "state": "OPEN",
+      "assignee": "Michal834"
+    },
+    {
+      "searchQuery": "idea"
+    }
+  ],
+  "lastFilter": {}
 }]]></component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDORuzQrc7RRJcL",
+        "number": 1
+      },
+      "lastSeen": 1776797530643
+    }
+  ]
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Michal834/idp-jobs-go.git",
+    "accountId": "e1f5556d-ba3c-4e1c-b43d-157de977a66a"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="3CgAhsVCuXNK0ypwnW2A7h4DHXb" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -27,10 +52,15 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
