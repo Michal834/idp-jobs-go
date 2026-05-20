@@ -1,0 +1,11 @@
+### Pobierz zadanie o ID 1
+GET http://localhost:8080/idp/jobs/1
+Accept: application/json
+
+### Pobierz zadanie o ID 2
+GET http://localhost:8080/idp/jobs/2
+Accept: application/json
+
+### Pobierz zadanie o ID 123 (test)
+GET http://localhost:8080/idp/jobs/123
+Accept: application/json
