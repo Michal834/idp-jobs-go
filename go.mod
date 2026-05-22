@@ -3,7 +3,7 @@ module idp-jobs-go
 go 1.22
 
 require (
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.0.10
 	github.com/stretchr/testify v1.11.1
 )
 

@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: IDP Jobs API
+  version: 1.0.0
+  description: API do zarządzania zadaniami IDP
+
+paths:
+  /idp/jobs/{jobId}:
+    get:
+      summary: Pobiera szczegóły konkretnego zadania
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sukces - zwraca obiekt Job
+          content:
+            application/json:
+              schema:
+                $ref: '../../schemas/job.schema.json'
+        '404':
+          description: Nie znaleziono zadania o podanym ID
