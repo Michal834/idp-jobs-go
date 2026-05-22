@@ -30,3 +30,6 @@ vendor/
 # Environment variables
 .env
 .env.local
+
+# Hack files
+hack/
